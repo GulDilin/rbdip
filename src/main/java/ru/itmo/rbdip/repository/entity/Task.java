@@ -25,7 +25,7 @@ public class Task {
     @Column(nullable = false, columnDefinition = "date")
     Date deadline;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name="task_tags",
             joinColumns=
             @JoinColumn(name="task_id", referencedColumnName="id"),
@@ -36,5 +36,16 @@ public class Task {
 
     public Task() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", deadline=" + deadline +
+                ", tags=" + tags +
+                '}';
     }
 }

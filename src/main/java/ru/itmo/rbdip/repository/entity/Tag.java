@@ -12,7 +12,7 @@ public class Tag {
     @Column(nullable = false, unique = true)
     String title;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name="task_tags",
             joinColumns=
             @JoinColumn(name="tag_id", referencedColumnName="id"),
@@ -26,7 +26,19 @@ public class Tag {
         this.title = title;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Tag() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
     }
 }

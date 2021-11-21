@@ -12,6 +12,10 @@ public class TaskData {
         this.tags = tags;
     }
 
+    public TaskData(){
+
+    }
+
     String title;
     String description;
     Date deadline;

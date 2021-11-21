@@ -4,6 +4,8 @@ public class TagData {
 
     String title;
 
+    public TagData(){}
+
     public TagData(String title) {
         this.title = title;
     }

@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -28,9 +27,6 @@ class SpringFoxConfig extends WebMvcConfigurationSupport {
             .build();
     }
 
-    private ApiKey apiKey() {
-        return new ApiKey("JWT", "Authorization", "header");
-    }
 
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -43,8 +39,8 @@ class SpringFoxConfig extends WebMvcConfigurationSupport {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Микрозаймы",
-                "Микрозаймы для всех",
+                "",
+                "",
                 API_VERSION,
                 "Terms of service",
                 new Contact("", "", ""),
