@@ -1,11 +1,15 @@
 package ru.itmo.rbdip.repository.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Task {
+@Data
+public class Task implements Serializable {
 
     public Task(Long id, String title, String description, Date deadline, List<Tag> tags) {
         this.id = id;
@@ -34,9 +38,7 @@ public class Task {
     )
     private List<Tag> tags;
 
-    public Task() {
-
-    }
+    public Task() {}
 
     @Override
     public String toString() {

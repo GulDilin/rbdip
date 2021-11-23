@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-     @Query(value = "select * from Task t where (select count((:tags)))= (select count(*) from task_tags tt where t.id = tt.task_id and tag_id in (:tags))", nativeQuery = true)
+     @Query(value = "select * from Task t where (select count((:tags))) = (select count(*) from task_tags tt where t.id = tt.task_id and tag_id in (:tags))", nativeQuery = true)
      List<Task> findDistinctByTagsContainingOrderByDeadline(List<Long> tags);
 }

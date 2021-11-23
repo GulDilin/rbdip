@@ -37,7 +37,6 @@ class TaskController {
         for(Tag tag: tags)
             tagIds.add(tag.getId());
         List<Task> tasks = repository.findDistinctByTagsContainingOrderByDeadline(tagIds);
-        System.out.println(tasks);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
@@ -47,10 +46,10 @@ class TaskController {
       List<Tag> tags = tagRepository.findAllByTitleIn(tagDatas);
       for(String tagData: tagDatas){
           Tag tag = tagRepository.getByTitle(tagData);
-          if (tag==null) {
-              tag = tagRepository.save(new Tag(0L,tagData));
+          if (tag == null) {
+              tag = tagRepository.save(new Tag(0L, tagData));
               tags.add(tag);
-              }
+          }
       }
 
       Task task = new Task(0L,taskdata.getTitle(),taskdata.getDescription(),taskdata.getDeadline(),tags);
