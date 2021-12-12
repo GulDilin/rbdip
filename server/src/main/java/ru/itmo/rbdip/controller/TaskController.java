@@ -1,5 +1,6 @@
 package ru.itmo.rbdip.controller;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,13 @@ class TaskController {
     TagRepository tagRepository;
 
     @GetMapping
-    ResponseEntity<List<Task>> searchTasks(@RequestParam(required = false) List<String> tagTitles) {
+    ResponseEntity<List<Task>> searchTasks(@RequestParam(required = false) List<String> tagTitles, @RequestParam(required = false) Integer count) {
         if (tagTitles==null || tagTitles.isEmpty())
-            return new ResponseEntity<>(repository.findAll(Sort.by(Sort.Direction.ASC,"deadline")), HttpStatus.OK);
+            if (count==null)
+                return new ResponseEntity<>(repository.findAll(Sort.by(Sort.Direction.ASC,"deadline")), HttpStatus.OK);
+            else
+                return new ResponseEntity<>(repository.findAll(PageRequest.of(0,count,Sort.by(Sort.Direction.ASC,"deadline"))).toList(), HttpStatus.OK);
+
         List<Tag> tags = tagRepository.findAllByTitleIn(tagTitles);
         List<Long> tagIds = new ArrayList<>();
         for(Tag tag: tags)
@@ -41,7 +46,7 @@ class TaskController {
     }
 
     @PostMapping
-    ResponseEntity<Task> createTask(@RequestBody TaskData taskdata){
+    ResponseEntity<Object> createTask(@RequestBody TaskData taskdata){
       List<String> tagDatas = taskdata.getTags();
       List<Tag> tags = tagRepository.findAllByTitleIn(tagDatas);
       for(String tagData: tagDatas){
@@ -53,7 +58,11 @@ class TaskController {
       }
 
       Task task = new Task(0L,taskdata.getTitle(),taskdata.getDescription(),taskdata.getDeadline(),tags);
-      task = repository.save(task);
+      try {
+          task = repository.save(task);
+      }catch (Exception e){
+          return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+      }
 
       return new ResponseEntity<>(task,HttpStatus.OK);
     }

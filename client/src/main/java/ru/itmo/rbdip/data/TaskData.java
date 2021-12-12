@@ -1,16 +1,13 @@
-package ru.itmo.rbdip.repository.data;
+package ru.itmo.rbdip.data;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+@AllArgsConstructor
 public class TaskData {
-
-    public TaskData(String title, String description, Date deadline, List<String> tags) {
-        this.title = title;
-        this.description = description;
-        this.deadline = deadline;
-        this.tags = tags;
-    }
 
     public TaskData(){
 

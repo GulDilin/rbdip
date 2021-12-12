@@ -1,5 +1,6 @@
 package ru.itmo.rbdip.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class Task implements Serializable {
     @Column(nullable = false)
     String description;
     @Column(nullable = false, columnDefinition = "date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     Date deadline;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
