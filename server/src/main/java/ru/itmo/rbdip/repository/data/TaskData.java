@@ -1,7 +1,5 @@
 package ru.itmo.rbdip.repository.data;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 import java.util.List;
 
