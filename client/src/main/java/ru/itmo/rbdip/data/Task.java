@@ -7,13 +7,6 @@ import java.util.List;
 
 public class Task implements Serializable {
 
-    public Task(Long id, String title, String description, Date deadline, List<Tag> tags) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.deadline = deadline;
-        this.tags = tags;
-    }
 
 
     Long id;

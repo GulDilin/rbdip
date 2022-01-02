@@ -6,13 +6,6 @@ public class Tag {
 
     public Tag(){}
 
-    public Tag(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
 
     @Override
     public String toString() {
