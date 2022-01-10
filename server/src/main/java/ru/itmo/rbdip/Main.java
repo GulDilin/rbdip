@@ -7,9 +7,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 class Main extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Main.class,args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
+    }
 
 }
 

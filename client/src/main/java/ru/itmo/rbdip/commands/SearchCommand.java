@@ -1,13 +1,15 @@
 package ru.itmo.rbdip.commands;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.HttpClientErrorException;
 import ru.itmo.rbdip.data.Task;
 
-import java.util.*;
 
-public class SearchCommand extends Command{
+public class SearchCommand extends Command {
 
-    public SearchCommand(Scanner scanner, String url) {
-        super(scanner, url);
+    public SearchCommand(String url) {
+        super(url);
     }
 
     @Override
@@ -15,21 +17,26 @@ public class SearchCommand extends Command{
         System.out.print("Search tasks by tag: ");
         String tagsStr = scanner.nextLine();
         while (tagsStr.contains("  "))
-            tagsStr = tagsStr.replaceAll("  "," ");
+            tagsStr = tagsStr.replaceAll("  ", " ");
 
-        String[] tags= tagsStr.split(" ");
-        String response = template.getForEntity (baseUrl + "task?"+ getURLParams(tags), String.class).getBody();
-        Task[] tasks = gson.fromJson(response, Task[].class);
-        for(Task task: tasks)
-            System.out.println(task);
+        String[] tags = tagsStr.split(" ");
+        headers.set("Authorization", authHeader);
+        try {
+            String response = template.exchange(baseUrl + "task?" + getURLParams(tags), HttpMethod.GET, new HttpEntity<>(headers), String.class).getBody();
+            Task[] tasks = gson.fromJson(response, Task[].class);
+            for (Task task : tasks)
+                System.out.println(task);
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getResponseBodyAsString());
+        }
     }
 
 
-    String getURLParams(String[] tags){
+    String getURLParams(String[] tags) {
         StringBuilder url = new StringBuilder();
-        for(String tag: tags)
+        for (String tag : tags)
             url.append("tagTitles=").append(tag).append("&");
-        return url.substring(0,url.length()-1);
+        return url.substring(0, url.length() - 1);
     }
 
     @Override

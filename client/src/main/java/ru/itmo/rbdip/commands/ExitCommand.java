@@ -1,16 +1,14 @@
 package ru.itmo.rbdip.commands;
 
-import java.util.Scanner;
+public class ExitCommand extends Command {
 
-public class ExitCommand extends Command{
-
-    public ExitCommand(Scanner scanner, String url) {
-        super(scanner, url);
+    public ExitCommand(String url) {
+        super(url);
     }
 
     @Override
-    public void execute(){
-        System.exit(0);
+    public void execute() {
+        Command.authHeader = null;
     }
 
     @Override
