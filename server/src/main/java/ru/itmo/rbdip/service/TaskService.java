@@ -15,7 +15,6 @@ import java.util.List;
 public class TaskService {
 
     TaskRepository repository;
-
     TagRepository tagRepository;
 
     public TaskService(TaskRepository repository, TagRepository tagInterface) {
@@ -32,8 +31,7 @@ public class TaskService {
 
         List<Tag> tags = tagRepository.findAllByTitleIn(tagTitles);
         List<Long> tagIds = new ArrayList<>();
-        for (Tag tag : tags)
-            tagIds.add(tag.getId());
+        for (Tag tag : tags) tagIds.add(tag.getId());
         return repository.findDistinctByTagsContainingOrderByDeadline(user.getId(), tagIds);
 
     }

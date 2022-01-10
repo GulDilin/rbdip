@@ -38,8 +38,10 @@ public class Main {
                 printMenu(commands);
             } catch (NumberFormatException e) {
                 System.out.println("Incorrect number");
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
                 System.out.println("No such command");
+            } catch (Exception e) {
+                System.out.println("Unexpected error happened");
             }
         }
     }

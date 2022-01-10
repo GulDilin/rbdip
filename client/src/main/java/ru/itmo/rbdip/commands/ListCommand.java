@@ -19,17 +19,17 @@ public class ListCommand extends Command {
         do {
             System.out.print("Count of task(>0) (skip if show all): ");
             nStr = scanner.nextLine();
-            if ("".equals(nStr))
-                break;
+            if (nStr.isEmpty()) break;
             try {
                 n = Integer.parseInt(nStr);
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 System.out.println("Incorrect number");
             }
         } while (n <= 0);
         headers.set("Authorization", authHeader);
         try {
             String response = template.exchange(baseUrl + "task" + (n <= 0 ? "" : "?count=" + n), HttpMethod.GET, new HttpEntity<>(headers), String.class).getBody();
+            System.out.println(response);
             Task[] tasks = gson.fromJson(response, Task[].class);
             for (Task task : tasks)
                 System.out.println(task);
