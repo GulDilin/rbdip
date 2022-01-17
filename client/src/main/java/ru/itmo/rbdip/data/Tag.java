@@ -4,7 +4,8 @@ public class Tag {
 
     String title;
 
-    public Tag(){}
+    public Tag() {
+    }
 
 
     @Override

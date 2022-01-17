@@ -8,18 +8,18 @@ import java.util.List;
 public class Task implements Serializable {
 
 
-
     Long id;
     String title;
     String description;
     Date deadline;
     private List<Tag> tags;
 
-    public Task() {}
+    public Task() {
+    }
 
     @Override
     public String toString() {
-        return title+'\n' +
+        return title + '\n' +
                 "\tdescription = " + description + "\n" +
                 "\tdeadline = " + new SimpleDateFormat("dd.MM.yyyy").format(deadline) + "\n" +
                 "\ttags = " + tags;

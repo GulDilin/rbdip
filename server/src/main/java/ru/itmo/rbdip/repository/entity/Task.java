@@ -1,7 +1,9 @@
 package ru.itmo.rbdip.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,15 +12,9 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task implements Serializable {
-
-    public Task(Long id, String title, String description, Date deadline, List<Tag> tags) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.deadline = deadline;
-        this.tags = tags;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,15 +28,18 @@ public class Task implements Serializable {
     Date deadline;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name="task_tags",
-            joinColumns=
-            @JoinColumn(name="task_id", referencedColumnName="id"),
-            inverseJoinColumns=
-            @JoinColumn(name="tag_id", referencedColumnName="id", columnDefinition = "bigint NOT NULL constraint tag_id_fk references tag on delete cascade")
+    @JoinTable(name = "task_tags",
+            joinColumns =
+            @JoinColumn(name = "task_id", referencedColumnName = "id"),
+            inverseJoinColumns =
+            @JoinColumn(name = "tag_id", referencedColumnName = "id", columnDefinition = "bigint NOT NULL constraint tag_id_fk references tag on delete cascade")
     )
     private List<Tag> tags;
 
-    public Task() {}
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User user;
+
 
     @Override
     public String toString() {

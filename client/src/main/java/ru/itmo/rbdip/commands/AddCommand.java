@@ -1,21 +1,22 @@
 package ru.itmo.rbdip.commands;
 
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import ru.itmo.rbdip.data.TaskData;
 import ru.itmo.rbdip.data.Task;
+import ru.itmo.rbdip.data.TaskData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-public class AddCommand extends Command{
+public class AddCommand extends Command {
 
-    public AddCommand(Scanner scanner, String url) {
-        super(scanner, url);
+    public AddCommand(String url) {
+        super(url);
     }
 
     @Override
@@ -29,37 +30,36 @@ public class AddCommand extends Command{
         while (deadline == null)
             try {
                 System.out.print("Deadline(dd.MM.yyyy): ");
-                deadline =  new SimpleDateFormat("dd.MM.yyyy").parse(scanner.nextLine());
+                deadline = new SimpleDateFormat("dd.MM.yyyy").parse(scanner.nextLine());
             } catch (ParseException e) {
                 System.out.println("Incorrect date");
             }
 
         System.out.println("Tags (finish on empty line)");
-        List<String> tags  = new ArrayList<>();
+        List<String> tags = new ArrayList<>();
         String tag;
-        System.out.print(1+" ");
+        System.out.print(1 + " ");
         while (!(tag = scanner.nextLine()).equals("")) {
             tags.add(tag);
-            System.out.print(tags.size()+1+" ");
+            System.out.print(tags.size() + 1 + " ");
         }
-        String request = gson.toJson(new TaskData(title,description,deadline,tags));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        String request = gson.toJson(new TaskData(title, description, deadline, tags));
+        headers.set("Authorization", authHeader);
         HttpEntity<String> entity = new HttpEntity<>(request, headers);
         ResponseEntity<String> response = null;
         try {
-            response = template.postForEntity(baseUrl+"task",entity,String.class);
+            response = template.postForEntity(baseUrl + "task", entity, String.class);
             Task task = gson.fromJson(response.getBody(), Task.class);
-            System.out.println(task);
-        }catch (HttpClientErrorException e){
-            System.out.println(response.getBody());
+            if (response.getStatusCode() == HttpStatus.CREATED)
+                System.out.println(task);
+            else System.out.println(response);
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getResponseBodyAsString());
         }
     }
 
     @Override
     public String getName() {
-       return  "Add task";
+        return "Add task";
     }
 }
